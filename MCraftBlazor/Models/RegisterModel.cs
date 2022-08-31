@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MCraftBlazor.Helpers.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace MCraftBlazor.Models
 {
@@ -15,5 +16,8 @@ namespace MCraftBlazor.Models
         [Required(ErrorMessage = "Адрес электронной почты не может быть пустым.")]
         [EmailAddress(ErrorMessage = "Некорректный адрес электронной почты.")]
         public string Email { get; set; }
+        [Required]
+        [BoolEquals(true, ErrorMessage = "Вы должны принять правла для регистрации.")]
+        public bool AcceptRule { get; set; }
     }
 }

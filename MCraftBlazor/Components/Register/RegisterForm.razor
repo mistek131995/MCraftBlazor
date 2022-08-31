@@ -1,0 +1,63 @@
+﻿@inject HttpClient http
+@using Models
+
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <h3>Создание аккаунта</h3>
+        <EditForm Model="registerModel" OnValidSubmit="OnValidAsync">
+            <DataAnnotationsValidator />
+
+            <div class="mb-4">
+                <label class="form-label">Логин:</label>
+                <ValidationMessage For="@(() => registerModel.Login)" />
+                <input class="form-control" type="text" placeholder="Введите логин" @bind-value="registerModel.Login" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Пароль:</label>
+                <ValidationMessage For="@(() => registerModel.Password)" />
+                <input class="form-control mb-1" type="password" placeholder="Введите пароль" @bind-value="registerModel.Password" />
+
+                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+                <input class="form-control" type="password" placeholder="Повторите пароль" @bind-value="registerModel.ConfirmPassword" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Электронная почта:</label>
+                <ValidationMessage For="@(() => registerModel.Email)" />
+                <input class="form-control" type="text" placeholder="Введите почту" @bind-value="registerModel.Email" />
+            </div>
+
+            <div class="mb-4">
+                <ValidationMessage For="@(() => registerModel.AcceptRule)" />
+                <input type="checkbox" class="form-check-input" id="accept-rule" @bind-value="registerModel.AcceptRule">
+                <label class="form-check-label" for="accept-rule">Я ознакомился с правилами и принимаю их.</label>
+            </div>
+
+            <button class="btn btn-dark" type="submit">Регистрация</button>
+        </EditForm>
+
+    </div>
+    <div class="col-3"></div>
+
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public EventCallback<bool> RegisterSuccess { get; set; }
+
+    RegisterModel registerModel = new RegisterModel();
+
+    public async Task OnValidAsync(){
+
+
+        await RegisterSuccess.InvokeAsync(true);
+
+    }
+
+}

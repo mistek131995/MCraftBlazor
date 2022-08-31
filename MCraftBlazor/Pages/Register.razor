@@ -1,51 +1,20 @@
 ﻿@page "/register"
-@inject HttpClient http
-@using Models
+@using MCraftBlazor.Components.Common
+@using MCraftBlazor.Components.Register
 
 
-<div class="row">
-    <div class="col-3"></div>
-    <div class="col-6">
-        <h3>Создание аккаунта</h3>
-        <EditForm Model="registerModel" OnValidSubmit="OnValid" OnInvalidSubmit="OnInvalid">
-            <DataAnnotationsValidator/>
+@if(registerSuccess){
 
-            <div class="mb-4">
-                <label class="form-label">Логин:</label>
-                <ValidationMessage For="@(() => registerModel.Login)" />
-                <input class="form-control" type="text" placeholder="Введите логин" @bind-value="registerModel.Login" />
-            </div>
+    <SuccessMessage Message="@message" />
 
-            <div class="mb-4">
-                <label class="form-label">Пароль:</label>
-                <ValidationMessage For="@(() => registerModel.Password)" />
-                <input class="form-control mb-1" type="password" placeholder="Введите пароль" @bind-value="registerModel.Password" />
+} else {
 
-                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
-                <input class="form-control" type="password" placeholder="Повторите пароль" @bind-value="registerModel.ConfirmPassword" />
-            </div>
+    <RegisterForm RegisterSuccess="(bool isRegisterSuccess) => registerSuccess = isRegisterSuccess"/>
 
-            <div class="mb-4">
-                <ValidationMessage For="@(() => registerModel.Email)" />
-                <input class="form-control" type="text" placeholder="Введите почту" @bind-value="registerModel.Email" />
-            </div>
+}
 
-            <button class="btn btn-dark" type="submit">Регистрация</button>
-        </EditForm>
-
-    </div>
-    <div class="col-3"></div>
-
-</div>
 
 @code {
-    RegisterModel registerModel = new RegisterModel();
-
-    private async Task OnValid(){
-        var test = await http.PostAsJsonAsync("https://localhost:7132/user/adduser", registerModel);
-    }
-
-    private void OnInvalid(){
-        Console.WriteLine("Невалидная модель");
-    }
+    private bool registerSuccess = false;
+    private string message = "Регистрация прошла успешно. Сообщение с подтверждением отправлено вам на почту.";
 }
