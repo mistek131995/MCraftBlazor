@@ -10,14 +10,27 @@
         <EditForm Model="registerModel" OnValidSubmit="OnValid" OnInvalidSubmit="OnInvalid">
             <DataAnnotationsValidator/>
 
-            <ValidationMessage For="@(() => registerModel.Login)"/>
-            <input class="form-control" type="text" placeholder="Введите логин" @bind-value="registerModel.Login"/>
+            <div class="mb-4">
+                <label class="form-label">Логин:</label>
+                <ValidationMessage For="@(() => registerModel.Login)" />
+                <input class="form-control" type="text" placeholder="Введите логин" @bind-value="registerModel.Login" />
+            </div>
 
-            <ValidationMessage For="@(() => registerModel.Password)"/>
-            <input class="form-control" type="password" placeholder="Введите пароль" @bind-value="registerModel.Password" />
-            <input class="form-control" type="password" placeholder="Повторите пароль" @bind-value="registerModel.Password" />
-            <input class="form-control" type="text" placeholder="Введите почту" @bind-value="registerModel.Email" />
-            <button class="btn-dark" type="submit">Регистарция</button>
+            <div class="mb-4">
+                <label class="form-label">Пароль:</label>
+                <ValidationMessage For="@(() => registerModel.Password)" />
+                <input class="form-control mb-1" type="password" placeholder="Введите пароль" @bind-value="registerModel.Password" />
+
+                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+                <input class="form-control" type="password" placeholder="Повторите пароль" @bind-value="registerModel.ConfirmPassword" />
+            </div>
+
+            <div class="mb-4">
+                <ValidationMessage For="@(() => registerModel.Email)" />
+                <input class="form-control" type="text" placeholder="Введите почту" @bind-value="registerModel.Email" />
+            </div>
+
+            <button class="btn btn-dark" type="submit">Регистрация</button>
         </EditForm>
 
     </div>
@@ -29,7 +42,7 @@
     RegisterModel registerModel = new RegisterModel();
 
     private async Task OnValid(){
-        Console.WriteLine("Валидная модель");
+        var test = await http.PostAsJsonAsync("https://localhost:7132/user/adduser", registerModel);
     }
 
     private void OnInvalid(){
