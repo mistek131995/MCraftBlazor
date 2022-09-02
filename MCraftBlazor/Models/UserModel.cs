@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCraftBlazor.Models
 {
-    public class RegisterModel
+    public class UserModel
     {
         [Required(ErrorMessage = "Логин не может быть пустым.")]
         [MinLength(5, ErrorMessage = "Минимальная длина логина 5 символов.")]
@@ -18,6 +18,6 @@ namespace MCraftBlazor.Models
         public string Email { get; set; }
         [Required]
         [BoolEquals(true, ErrorMessage = "Вы должны принять правла для регистрации.")]
-        public bool AcceptRule { get; set; }
+        public bool RuleAccept { get; set; }
     }
 }
