@@ -1,7 +1,6 @@
 using MCraftBlazor;
 using MCraftBlazor.Helpers.Services;
 using MCraftBlazor.Repository.Implementation;
-using MCraftBlazor.Repository.Interfaces;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
@@ -14,7 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<ResponseErrorHandlerService>();
 
 #region Репозиторий
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserRepository>();
 #endregion
 
 

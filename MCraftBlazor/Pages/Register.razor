@@ -1,7 +1,7 @@
 ﻿@page "/register"
-@inject IUserRepository userRepository
+@inject UserRepository userRepository
 @using MCraftBlazor.Components.Common
-@using MCraftBlazor.Repository.Interfaces
+@using MCraftBlazor.Repository.Implementation
 @using Models
 @using System.Text.Json
 
@@ -51,11 +51,19 @@
 
 @code {
 
-    UserModel userModel = new UserModel();
+    private UserModel userModel = new UserModel();
 
-    public async Task OnValidAsync()
+
+    private async Task OnValidAsync()
     {
+        userRepository.HasError += Test;
+
         await userRepository.CreateUserAsync(userModel);
+    }
+
+
+    private void Test(){
+        Console.WriteLine("Ну тут какая-то ошибка...");
     }
 
 }

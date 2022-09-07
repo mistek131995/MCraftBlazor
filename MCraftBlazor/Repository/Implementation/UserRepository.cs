@@ -1,19 +1,18 @@
-﻿using MCraftBlazor.Components.Common;
-using MCraftBlazor.Helpers.Services;
+﻿using MCraftBlazor.Helpers.Services;
 using MCraftBlazor.Models;
-using MCraftBlazor.Repository.Interfaces;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
 namespace MCraftBlazor.Repository.Implementation
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
     {
         private readonly NavigationManager navigation;
         private readonly HttpClient httpClient;
         private readonly ResponseErrorHandlerService responseHandler;
 
-
+        public delegate void ResposeError();
+        public event ResposeError HasError; 
 
         public UserRepository(NavigationManager navigation, HttpClient httpClient, ResponseErrorHandlerService responseHandler)
         {
@@ -36,6 +35,7 @@ namespace MCraftBlazor.Repository.Implementation
                 var result = await response.Content.ReadFromJsonAsync<ResponseModel>();
 
                 await responseHandler.ResponseHandlerAsync(result);
+                HasError?.Invoke();
             }
 
         }
@@ -45,9 +45,23 @@ namespace MCraftBlazor.Repository.Implementation
             throw new NotImplementedException();
         }
 
-        public Task GetUser(string Login, string Password)
+        public async Task GetUser(LoginModel model)
         {
-            throw new NotImplementedException();
+            var responese = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "token/", model);
+
+            if (responese.IsSuccessStatusCode)
+            {
+                var result = await responese.Content.ReadFromJsonAsync<ResponseModel>();
+
+                Console.WriteLine(result.Payload);
+            }
+            else
+            {
+                var result = await responese.Content.ReadFromJsonAsync<ResponseModel>();
+
+                await responseHandler.ResponseHandlerAsync(result);
+                HasError?.Invoke();
+            }
         }
 
         public Task UpdateUser(UserModel model)
