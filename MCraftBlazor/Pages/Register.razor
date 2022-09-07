@@ -1,20 +1,61 @@
 ﻿@page "/register"
+@inject IUserRepository userRepository
 @using MCraftBlazor.Components.Common
-@using MCraftBlazor.Components.Register
+@using MCraftBlazor.Repository.Interfaces
+@using Models
+@using System.Text.Json
 
 
-@if(registerSuccess){
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <h3>Создание аккаунта</h3>
 
-    <SuccessMessage Message="@message" />
+        <EditForm Model="userModel" OnValidSubmit="OnValidAsync">
+            <DataAnnotationsValidator />
 
-} else {
+            <div class="mb-4">
+                <label class="form-label">Логин:</label>
+                <ValidationMessage For="@(() => userModel.Login)" />
+                <input class="form-control" type="text" placeholder="Введите логин" @bind-value="userModel.Login" />
+            </div>
 
-    <RegisterForm RegisterSuccess="(bool isRegisterSuccess) => registerSuccess = isRegisterSuccess"/>
+            <div class="mb-4">
+                <label class="form-label">Пароль:</label>
+                <ValidationMessage For="@(() => userModel.Password)" />
+                <input class="form-control mb-1" type="password" placeholder="Введите пароль" @bind-value="userModel.Password" />
 
-}
+                <ValidationMessage For="@(() => userModel.ConfirmPassword)" />
+                <input class="form-control" type="password" placeholder="Повторите пароль" @bind-value="userModel.ConfirmPassword" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Электронная почта:</label>
+                <ValidationMessage For="@(() => userModel.Email)" />
+                <input class="form-control" type="text" placeholder="Введите почту" @bind-value="userModel.Email" />
+            </div>
+
+            <div class="mb-4">
+                <ValidationMessage For="@(() => userModel.RuleAccept)" />
+                <input type="checkbox" class="form-check-input" id="accept-rule" @bind-value="userModel.RuleAccept">
+                <label class="form-check-label" for="accept-rule">Я ознакомился с правилами и принимаю их.</label>
+            </div>
+
+            <button class="btn btn-dark" type="submit">Регистрация</button>
+        </EditForm>
+    </div>
+    <div class="col-3"></div>
+
+</div>
 
 
 @code {
-    private bool registerSuccess = false;
-    private string message = "Регистрация прошла успешно. Сообщение с подтверждением отправлено вам на почту.";
+
+    UserModel userModel = new UserModel();
+
+    public async Task OnValidAsync()
+    {
+        await userRepository.CreateUserAsync(userModel);
+    }
+
 }

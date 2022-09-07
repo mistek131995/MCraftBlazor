@@ -1,29 +1,41 @@
-﻿using MCraftBlazor.Models;
+﻿using MCraftBlazor.Components.Common;
+using MCraftBlazor.Helpers.Services;
+using MCraftBlazor.Models;
 using MCraftBlazor.Repository.Interfaces;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
 namespace MCraftBlazor.Repository.Implementation
 {
     public class UserRepository : IUserRepository
     {
+        private readonly NavigationManager navigation;
         private readonly HttpClient httpClient;
-        private readonly Uri baseUrl;
-        public UserRepository(HttpClient httpClient)
+        private readonly ResponseErrorHandlerService responseHandler;
+
+
+
+        public UserRepository(NavigationManager navigation, HttpClient httpClient, ResponseErrorHandlerService responseHandler)
         {
+            this.navigation = navigation;
             this.httpClient = httpClient;
-            baseUrl = httpClient.BaseAddress;
+            this.responseHandler = responseHandler;
         }
 
         public async Task CreateUserAsync(UserModel model)
         {
-            var response = await httpClient.PostAsJsonAsync(baseUrl + "user/adduser", model);
+
+            var response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "user/adduser", model);
 
             if (response.IsSuccessStatusCode)
             {
-
-            } else
+                navigation.NavigateTo("/login?register=success");
+            } 
+            else
             {
+                var result = await response.Content.ReadFromJsonAsync<ResponseModel>();
 
+                await responseHandler.ResponseHandlerAsync(result);
             }
 
         }
