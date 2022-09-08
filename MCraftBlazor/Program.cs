@@ -1,5 +1,6 @@
 using MCraftBlazor;
-using MCraftBlazor.Helpers.Services;
+using MCraftBlazor.Helpers.Services.Implementations;
+using MCraftBlazor.Helpers.Services.Interfaces;
 using MCraftBlazor.Repository.Implementation;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -10,8 +11,8 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7132") });
-builder.Services.AddScoped<ResponseErrorHandlerService>();
-builder.Services.AddScoped<LocalStorageService>();
+builder.Services.AddScoped<IResponseErrorHandlerService, ResponseErrorHandlerService>();
+builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 
 #region Репозиторий
 builder.Services.AddScoped<UserRepository>();

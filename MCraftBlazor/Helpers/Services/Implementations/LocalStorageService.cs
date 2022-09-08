@@ -1,8 +1,10 @@
-﻿using Microsoft.JSInterop;
+﻿using MCraftBlazor.Helpers.Services.Interfaces;
+using Microsoft.JSInterop;
+using System.Text.Json;
 
-namespace MCraftBlazor.Helpers.Services
+namespace MCraftBlazor.Helpers.Services.Implementations
 {
-    public class LocalStorageService
+    public class LocalStorageService : ILocalStorageService
     {
         private readonly IJSRuntime jSRuntime;
         public LocalStorageService(IJSRuntime jSRuntime)
@@ -15,11 +17,14 @@ namespace MCraftBlazor.Helpers.Services
             await jSRuntime.InvokeVoidAsync("localStorage.removeItem", key);
         }
 
-        public async Task<string> GetItemAsync(string key)
+        public async Task<T> GetItemAsync<T>(string key)
         {
             var result = await jSRuntime.InvokeAsync<string>("localStorage.getItem", key);
 
-            return result;
+            if (result == null)
+                return default;
+
+            return JsonSerializer.Deserialize<T>(result);
         }
 
         public async Task SetItemAsync(string key, string value)

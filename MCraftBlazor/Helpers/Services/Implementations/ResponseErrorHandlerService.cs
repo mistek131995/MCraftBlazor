@@ -1,9 +1,9 @@
-﻿using MCraftBlazor.Models;
-using Microsoft.AspNetCore.Components;
+﻿using MCraftBlazor.Helpers.Services.Interfaces;
+using MCraftBlazor.Models;
 
-namespace MCraftBlazor.Helpers.Services
+namespace MCraftBlazor.Helpers.Services.Implementations
 {
-    public class ResponseErrorHandlerService
+    public class ResponseErrorHandlerService : IResponseErrorHandlerService
     {
         public async Task ResponseHandlerAsync(ResponseModel model)
         {
