@@ -10,14 +10,16 @@ namespace MCraftBlazor.Repository.Implementation
         private readonly NavigationManager navigation;
         private readonly HttpClient httpClient;
         private readonly ResponseErrorHandlerService responseHandler;
+        private readonly LocalStorageService localSorage;
 
         public delegate void ResposeError();
         public event ResposeError HasError; 
 
-        public UserRepository(NavigationManager navigation, HttpClient httpClient, ResponseErrorHandlerService responseHandler)
+        public UserRepository(NavigationManager navigation, HttpClient httpClient, ResponseErrorHandlerService responseHandler, LocalStorageService localSorage)
         {
             this.navigation = navigation;
             this.httpClient = httpClient;
+            this.localSorage = localSorage;
             this.responseHandler = responseHandler;
         }
 
@@ -47,11 +49,13 @@ namespace MCraftBlazor.Repository.Implementation
 
         public async Task GetUser(LoginModel model)
         {
-            var responese = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "token/", model);
+            var responese = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "token/auth", model);
 
             if (responese.IsSuccessStatusCode)
             {
                 var result = await responese.Content.ReadFromJsonAsync<ResponseModel>();
+
+                await localSorage.SetItemAsync("token", result.Payload);
 
                 Console.WriteLine(result.Payload);
             }

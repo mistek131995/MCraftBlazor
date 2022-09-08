@@ -11,6 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7132") });
 builder.Services.AddScoped<ResponseErrorHandlerService>();
+builder.Services.AddScoped<LocalStorageService>();
 
 #region Репозиторий
 builder.Services.AddScoped<UserRepository>();
