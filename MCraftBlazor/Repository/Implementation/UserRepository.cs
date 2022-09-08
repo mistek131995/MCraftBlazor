@@ -23,7 +23,7 @@ namespace MCraftBlazor.Repository.Implementation
             this.responseHandler = responseHandler;
         }
 
-        public async Task CreateUserAsync(UserModel model)
+        public async Task CreateUserAsync(RegisterModel model)
         {
 
             var response = await httpClient.PostAsJsonAsync(httpClient.BaseAddress + "user/adduser", model);
@@ -68,7 +68,7 @@ namespace MCraftBlazor.Repository.Implementation
             }
         }
 
-        public Task UpdateUser(UserModel model)
+        public Task UpdateUser(RegisterModel model)
         {
             throw new NotImplementedException();
         }

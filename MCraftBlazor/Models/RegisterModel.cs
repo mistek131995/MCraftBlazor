@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MCraftBlazor.Models
 {
-    public class UserModel
+    public class RegisterModel
     {
         [Required(ErrorMessage = "Логин не может быть пустым.")]
         [MinLength(5, ErrorMessage = "Минимальная длина логина 5 символов.")]
