@@ -1,6 +1,7 @@
 ﻿using MCraftBlazor.Helpers.Services.Interfaces;
 using MCraftBlazor.Models;
 using Microsoft.AspNetCore.Components;
+using System.Text.Json;
 
 namespace MCraftBlazor.Helpers.Services.Implementations
 {
@@ -25,7 +26,10 @@ namespace MCraftBlazor.Helpers.Services.Implementations
 
         public async Task Login(LoginModel model)
         {
-            User = await httpService.Post<UserModel>("/token/auth", model);
+            var response = await httpService.Post<ResponseModel>("/token/auth", model);
+
+            User = JsonSerializer.Deserialize<UserModel>(response.Payload);
+
             await localStorageService.SetItemAsync("user", User);
         }
 
