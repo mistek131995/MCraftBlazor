@@ -4,6 +4,6 @@
     {
         Task DeleteItemAsync(string key);
         Task<T> GetItemAsync<T>(string key);
-        Task SetItemAsync(string key, string value);
+        Task SetItemAsync<T>(string key, T value);
     }
 }

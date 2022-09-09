@@ -8,9 +8,9 @@ namespace MCraftBlazor.Pages
 
         private async Task OnValidAsync()
         {
-            userRepository.HasError += Test;
+            //userRepository.HasError += Test;
 
-            await userRepository.GetUser(loginModel);
+            //await userRepository.GetUser(loginModel);
         }
 
         private void Test()

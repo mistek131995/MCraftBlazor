@@ -1,4 +1,5 @@
 ﻿using MCraftBlazor.Helpers.Services.Implementations;
+using MCraftBlazor.Helpers.Services.Interfaces;
 using MCraftBlazor.Models;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
@@ -9,12 +10,12 @@ namespace MCraftBlazor.Repository.Implementation
     {
         private readonly NavigationManager navigation;
         private readonly HttpClient httpClient;
-        private readonly ResponseErrorHandlerService responseHandler;
+        private readonly IResponseErrorHandlerService responseHandler;
 
         public delegate void ResposeError();
         public event ResposeError HasError; 
 
-        public UserRepository(NavigationManager navigation, HttpClient httpClient, ResponseErrorHandlerService responseHandler)
+        public UserRepository(NavigationManager navigation, HttpClient httpClient, IResponseErrorHandlerService responseHandler)
         {
             this.navigation = navigation;
             this.httpClient = httpClient;

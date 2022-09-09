@@ -1,31 +1,39 @@
 ﻿using MCraftBlazor.Helpers.Services.Interfaces;
 using MCraftBlazor.Models;
+using Microsoft.AspNetCore.Components;
 
 namespace MCraftBlazor.Helpers.Services.Implementations
 {
     public class AuthenticationService : IAuthenticationService
     {
         public UserModel User {get; private set;}
-        public ILocalStorageService localStorageService;
+        private readonly ILocalStorageService localStorageService;
+        private readonly IHttpService httpService;
+        private readonly NavigationManager navigationManager;
 
-        public AuthenticationService(ILocalStorageService localStorageService)
+        public AuthenticationService(ILocalStorageService localStorageService, NavigationManager navigationManager, IHttpService httpService)
         {
             this.localStorageService = localStorageService;
+            this.navigationManager = navigationManager;
+            this.httpService = httpService;
         }
 
         public async Task Initialize()
         {
-            User = await localStorageService.GetItemAsync("")
+            User = await localStorageService.GetItemAsync<UserModel>("user");
         }
 
-        public Task Login(string username, string password)
+        public async Task Login(string username, string password)
         {
-            throw new NotImplementedException();
+            User = await httpService.Post<UserModel>("/users/authenticate", new { username, password });
+            await localStorageService.SetItemAsync("user", User);
         }
 
-        public Task Logout()
+        public async Task Logout()
         {
-            throw new NotImplementedException();
+            User = null;
+            await localStorageService.DeleteItemAsync("user");
+            navigationManager.NavigateTo("/login");
         }
     }
 }

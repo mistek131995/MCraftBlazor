@@ -27,9 +27,9 @@ namespace MCraftBlazor.Helpers.Services.Implementations
             return JsonSerializer.Deserialize<T>(result);
         }
 
-        public async Task SetItemAsync(string key, string value)
+        public async Task SetItemAsync<T>(string key, T value)
         {
-            await jSRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
+            await jSRuntime.InvokeVoidAsync("localStorage.setItem", key, JsonSerializer.Serialize(value));
         }
     }
 }
