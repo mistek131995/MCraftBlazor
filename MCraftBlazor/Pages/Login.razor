@@ -1,6 +1,7 @@
 ﻿@page "/login"
-@using MCraftBlazor.Repository.Implementation
-@inject UserRepository userRepository
+@using MCraftBlazor.Helpers.Services.Interfaces
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
 
 <div class="row">
     <div class="col-3"></div>

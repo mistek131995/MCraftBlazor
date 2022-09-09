@@ -6,7 +6,7 @@ namespace MCraftBlazor.Helpers.Services.Interfaces
     {
         UserModel User { get; }
         Task Initialize();
-        Task Login(string username, string password);
+        Task Login(LoginModel model);
         Task Logout();
     }
 }

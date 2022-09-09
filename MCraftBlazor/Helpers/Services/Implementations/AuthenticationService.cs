@@ -23,9 +23,9 @@ namespace MCraftBlazor.Helpers.Services.Implementations
             User = await localStorageService.GetItemAsync<UserModel>("user");
         }
 
-        public async Task Login(string username, string password)
+        public async Task Login(LoginModel model)
         {
-            User = await httpService.Post<UserModel>("/users/authenticate", new { username, password });
+            User = await httpService.Post<UserModel>("/token/auth", model);
             await localStorageService.SetItemAsync("user", User);
         }
 

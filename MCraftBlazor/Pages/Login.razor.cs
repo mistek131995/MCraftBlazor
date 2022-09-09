@@ -1,4 +1,7 @@
-﻿using MCraftBlazor.Models;
+﻿using MCraftBlazor.Helpers.Services.Implementations;
+using MCraftBlazor.Models;
+using Microsoft.AspNetCore.Components;
+using System.Reflection;
 
 namespace MCraftBlazor.Pages
 {
@@ -6,16 +9,17 @@ namespace MCraftBlazor.Pages
     {
         public LoginModel loginModel = new LoginModel();
 
-        private async Task OnValidAsync()
+        protected override void OnInitialized()
         {
-            //userRepository.HasError += Test;
-
-            //await userRepository.GetUser(loginModel);
+            if (AuthenticationService.User != null)
+            {
+                NavigationManager.NavigateTo("");
+            }
         }
 
-        private void Test()
+        private async Task OnValidAsync()
         {
-            Console.WriteLine("Ну тут какая-то ошибка...");
+            await AuthenticationService.Login(loginModel);
         }
 
     }
